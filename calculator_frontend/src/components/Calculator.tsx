@@ -52,7 +52,7 @@ export default function Calculator(): React.ReactElement {
       const key = e.key;
 
       // prevent default for keys we handle to avoid scrolling on space/backspace etc.
-      const handledKeys = /[0-9]|[\+\-\*\/=\.]|Enter|Backspace|Escape|%|m/i;
+      const handledKeys = /[0-9]|[\+\-\*\/=\.]|Enter|Backspace|Escape|%|m|c|C/i;
       if (handledKeys.test(key)) e.preventDefault();
 
       if (/^[0-9]$/.test(key)) {
@@ -87,7 +87,7 @@ export default function Calculator(): React.ReactElement {
         onBackspace();
         return;
       }
-      if (key === "Escape") {
+      if (key === "Escape" || key.toLowerCase() === "c") {
         onClearAll();
         return;
       }
@@ -135,7 +135,12 @@ export default function Calculator(): React.ReactElement {
     <div ref={containerRef} className={styles.wrapper}>
       <div className={styles.calculator} aria-label="Calculator">
         <div className={styles.display} role="region" aria-live="polite" aria-atomic="true">
-          <div className={styles.secondary}>{displaySecondary}</div>
+          <div className={styles.secondary}>
+            <span aria-hidden={!state.memory || state.memory === 0} title="Memory indicator">
+              {state.memory !== 0 ? "M " : ""}
+            </span>
+            {displaySecondary}
+          </div>
           <div className={`${styles.primary} ${state.currentValue === "Error" ? styles.error : ""}`}>
             {displayPrimary}
           </div>
