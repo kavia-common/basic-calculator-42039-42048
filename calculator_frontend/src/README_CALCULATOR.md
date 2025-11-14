@@ -1,44 +1,29 @@
-Ocean Professional Calculator
+# Ocean Professional Calculator
 
-- UI: Central panel with rounded corners, subtle shadows, and gradient backdrop.
-- Theme Colors: primary #2563EB, secondary #F59E0B, error #EF4444, text #111827, surfaces #ffffff on background #f9fafb.
+This calculator provides basic arithmetic operations with a modern Ocean Professional theme (blue and amber accents) and accessible micro-interactions.
 
-Features
-- Core Operations: add (+), subtract (−), multiply (×), divide (÷)
-- Extra Operations: percent (%), sign toggle (±), backspace (⌫), clear entry (CE), clear all (C)
-- Memory Functions: MC (clear), MR (recall), M+ (add to memory), M- (subtract from memory)
-- Display: shows current entry and previous operand+operator; errors are shown in themed error color
+## Features
+- Addition, subtraction, multiplication, division
+- Clear and equals functions
+- Keyboard input support (digits, operators, Enter/=, Backspace, Esc), plus memory actions
 
-New Keypad Layout (ergonomic, 4-column grid)
-- Top row: MC  MR  M+  M-  C
-- Second:  %   ±   ⌫   ÷
-- Third:   7   8   9   ×
-- Fourth:  4   5   6   −
-- Fifth:   1   2   3   +
-- Bottom:  0 (span 2)   .   = (highlighted)
+## Structure
+- `components/Calculator.tsx` — main UI component
+- `components/calculator.module.css` — styles for the calculator
+- `lib/calcUtils.ts` — calculation logic
 
-Accessibility & Interaction
-- Tab order is left-to-right, top-to-bottom.
-- Enter triggers equals (=). Space/Enter activates the focused button.
-- Buttons have a minimum touch-target size of 44px and visible focus rings.
-- The = button is highlighted (amber) for emphasis.
+## Design polish and accessibility
 
-Keyboard Shortcuts
-- Digits: 0–9
-- Decimal: .
-- Operators: +, -, *, /
-- Equals: Enter or =
-- Percent: %
-- Backspace: Backspace key
-- Clear All: Escape
-- Toggle Sign: S or Shift + - (underscore)
-- Memory:
-  - MR: M
-  - MC: Shift + M
-  - M+: Ctrl + M (Cmd + M on macOS)
-  - M-: Alt + M
+Ocean Professional refinements included:
+- Depth and micro-interactions: layered shadows, soft container gradient, hover-lift, and press animations using transform (avoids layout shift).
+- Buttons: subtle gradient/shine, smooth transitions (~180ms), active scale to 0.98, and high-contrast focus outlines with a primary glow.
+- Operator/equals emphasis: blue/amber accents with sufficient contrast (dark text on light amber).
+- Display: improved hierarchy and subtle inset feel, plus a CSS-only blinking caret to indicate ready state.
+- Responsiveness: increased spacing and minimum hit target size (44x44px).
 
-Implementation Notes
-- Calculation logic is centralized in src/lib/calcUtils.ts:
-  - Public functions include inputDigit, inputDecimal, setOperator, evaluate, toggleSign, computePercentage, backspace, clearEntry, clearAll, memoryClear, memoryRecall, memoryAdd, memorySubtract.
-- The UI lives in src/components/Calculator.tsx with responsive styling in src/components/calculator.module.css following the Ocean Professional theme.
+Accessibility:
+- Focus ring preserved and enhanced with high-contrast color and outline-offset.
+- Reduced motion respected using `prefers-reduced-motion: reduce` to disable transitions/animations, including the display caret blink.
+- Transform-based animations used to prevent layout shift for hover/press effects.
+
+No logic changes are included in this polish.
