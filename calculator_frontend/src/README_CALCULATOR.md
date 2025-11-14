@@ -4,10 +4,24 @@ Ocean Professional Calculator
 - Theme Colors: primary #2563EB, secondary #F59E0B, error #EF4444, text #111827, surfaces #ffffff on background #f9fafb.
 
 Features
-- Core Operations: add (+), subtract (-), multiply (×), divide (÷)
-- Extra Operations: percent (%), sign toggle (+/-), backspace (⌫), clear entry (CE), clear all (C)
+- Core Operations: add (+), subtract (−), multiply (×), divide (÷)
+- Extra Operations: percent (%), sign toggle (±), backspace (⌫), clear entry (CE), clear all (C)
 - Memory Functions: MC (clear), MR (recall), M+ (add to memory), M- (subtract from memory)
 - Display: shows current entry and previous operand+operator; errors are shown in themed error color
+
+New Keypad Layout (ergonomic, 4-column grid)
+- Top row: MC  MR  M+  M-  C
+- Second:  %   ±   ⌫   ÷
+- Third:   7   8   9   ×
+- Fourth:  4   5   6   −
+- Fifth:   1   2   3   +
+- Bottom:  0 (span 2)   .   = (highlighted)
+
+Accessibility & Interaction
+- Tab order is left-to-right, top-to-bottom.
+- Enter triggers equals (=). Space/Enter activates the focused button.
+- Buttons have a minimum touch-target size of 44px and visible focus rings.
+- The = button is highlighted (amber) for emphasis.
 
 Keyboard Shortcuts
 - Digits: 0–9

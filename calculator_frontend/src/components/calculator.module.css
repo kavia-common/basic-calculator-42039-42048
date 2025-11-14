@@ -57,88 +57,87 @@
 
 .grid {
   display: grid;
-  /* 5 columns to fit the added backspace on action row; numeric rows still align due to spans */
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem;
   padding: 0.75rem;
   background: linear-gradient(180deg, rgba(37, 99, 235, 0.04), rgba(249, 250, 251, 0.6));
 }
 
-.grid button {
+/* Base button style, min 44px target */
+.btn {
   appearance: none;
   border: none;
   border-radius: 0.75rem;
   padding: 0.9rem 0.75rem;
+  min-height: 44px;
   font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   transition: transform 80ms ease, background-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
   user-select: none;
   outline: none;
+  position: relative;
 }
 
-.grid button:active {
+/* Focus ring for accessibility */
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35), 0 2px 6px rgba(17, 24, 39, 0.1);
+}
+
+.btn:active {
   transform: translateY(1px);
 }
 
-.num {
+/* Variants */
+.digit {
   background: #ffffff;
   color: var(--text);
   box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.06);
 }
-
-.num:hover {
+.digit:hover {
   background: #f9fafb;
 }
 
-.action {
+.utility {
   background: #eef2ff;
   color: #3730a3;
   box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.06);
 }
-
-.action:hover {
+.utility:hover {
   background: #e0e7ff;
 }
 
-.op {
+.operator {
   background: var(--primary);
   color: #ffffff;
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
 }
-
-.op:hover {
+.operator:hover {
   background: #1d4ed8;
 }
 
-.equal {
+.equals {
   background: var(--secondary);
   color: #111827;
   box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);
 }
-
-.equal:hover {
+.equals:hover {
   background: #d97706;
   color: #111827;
 }
 
+/* Spans */
 .span2 {
   grid-column: span 2;
-}
-
-/* Keep operator and equal alignment in a 5-column grid by making "=" span 1 and numbers use spans where needed */
-.equal {
-  background: var(--secondary);
-  color: #111827;
-  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);
 }
 
 @media (max-width: 360px) {
   .calculator {
     border-radius: 1rem;
   }
-  .grid button {
+  .btn {
     padding: 0.8rem 0.6rem;
     font-size: 1rem;
+    min-height: 44px;
   }
 }

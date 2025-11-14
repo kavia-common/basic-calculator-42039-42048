@@ -8,7 +8,7 @@ import {
   Operator,
   backspace,
   clearAll,
-  clearEntry,
+
   computePercentage,
   evaluate,
   formatDisplay,
@@ -37,7 +37,7 @@ export default function Calculator(): React.ReactElement {
   const onToggleSign = () => setState((s) => toggleSign(s));
   const onPercent = () => setState((s) => computePercentage(s));
   const onOperator = (op: Operator) => setState((s) => setOperator(s, op));
-  const onClearEntry = () => setState((s) => clearEntry(s));
+
   const onClearAll = () => setState(() => clearAll());
   const onBackspace = () => setState((s) => backspace(s));
   const onEqual = () => setState((s) => evaluate(s));
@@ -146,92 +146,105 @@ export default function Calculator(): React.ReactElement {
           </div>
         </div>
 
-        <div className={styles.grid}>
-          {/* Memory row: MC MR M+ M- */}
-          <button className={styles.action} onClick={onMemoryClear} aria-label="Memory Clear (MC)" title="MC (Shift+M)">
+        <div
+          className={styles.grid}
+          role="group"
+          aria-label="Calculator keypad"
+          onKeyDown={(e) => {
+            // Make Enter also trigger equals when grid focused
+            if (e.key === "Enter") {
+              e.preventDefault();
+              onEqual();
+            }
+          }}
+        >
+          {/* Top utility row: MC MR M+ M- C */}
+          <button className={`${styles.btn} ${styles.utility}`} onClick={onMemoryClear} aria-label="Memory Clear (MC)" title="MC (Shift+M)">
             MC
           </button>
-          <button className={styles.action} onClick={onMemoryRecall} aria-label="Memory Recall (MR)" title="MR (M)">
+          <button className={`${styles.btn} ${styles.utility}`} onClick={onMemoryRecall} aria-label="Memory Recall (MR)" title="MR (M)">
             MR
           </button>
-          <button className={styles.action} onClick={onMemoryAdd} aria-label="Memory Add (M+)" title="M+ (Ctrl/Cmd+M)">
+          <button className={`${styles.btn} ${styles.utility}`} onClick={onMemoryAdd} aria-label="Memory Add (M+)" title="M+ (Ctrl/Cmd+M)">
             M+
           </button>
-          <button className={styles.action} onClick={onMemorySub} aria-label="Memory Subtract (M-)" title="M- (Alt+M)">
+          <button className={`${styles.btn} ${styles.utility}`} onClick={onMemorySub} aria-label="Memory Subtract (M-)" title="M- (Alt+M)">
             M-
           </button>
-
-          {/* Top row: CE, C, %, +/-, ⌫ */}
-          <button className={styles.action} onClick={onClearEntry} aria-label="Clear Entry" title="CE">
-            CE
-          </button>
-          <button className={styles.action} onClick={onClearAll} aria-label="Clear All" title="C / Esc">
+          <button className={`${styles.btn} ${styles.utility}`} onClick={onClearAll} aria-label="Clear All" title="C / Esc">
             C
           </button>
-          <button className={styles.action} onClick={onPercent} aria-label="Percent" title="%">
+
+          {/* Second row: % ± ⌫ ÷ */}
+          <button className={`${styles.btn} ${styles.utility}`} onClick={onPercent} aria-label="Percent">
             %
           </button>
-          <button className={styles.action} onClick={onToggleSign} aria-label="Toggle Sign" title="+/- (S)">
-            +/-
+          <button className={`${styles.btn} ${styles.utility}`} onClick={onToggleSign} aria-label="Toggle Sign">
+            ±
           </button>
-          <button className={styles.action} onClick={onBackspace} aria-label="Backspace" title="⌫ / Backspace">
+          <button className={`${styles.btn} ${styles.utility}`} onClick={onBackspace} aria-label="Backspace" title="⌫ / Backspace">
             ⌫
           </button>
-
-          {/* Row: 7 8 9 ÷ */}
-          <button className={styles.num} onClick={() => onDigit("7")}>
-            7
-          </button>
-          <button className={styles.num} onClick={() => onDigit("8")}>
-            8
-          </button>
-          <button className={styles.num} onClick={() => onDigit("9")}>
-            9
-          </button>
-          <button className={styles.op} onClick={() => onOperator("÷")} aria-label="Divide">
+          <button className={`${styles.btn} ${styles.operator}`} onClick={() => onOperator("÷")} aria-label="Divide">
             ÷
           </button>
 
-          {/* Row: 4 5 6 × */}
-          <button className={styles.num} onClick={() => onDigit("4")}>
-            4
+          {/* Third row: 7 8 9 × */}
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("7")}>
+            7
           </button>
-          <button className={styles.num} onClick={() => onDigit("5")}>
-            5
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("8")}>
+            8
           </button>
-          <button className={styles.num} onClick={() => onDigit("6")}>
-            6
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("9")}>
+            9
           </button>
-          <button className={styles.op} onClick={() => onOperator("×")} aria-label="Multiply">
+          <button className={`${styles.btn} ${styles.operator}`} onClick={() => onOperator("×")} aria-label="Multiply">
             ×
           </button>
 
-          {/* Row: 1 2 3 - */}
-          <button className={styles.num} onClick={() => onDigit("1")}>
-            1
+          {/* Fourth row: 4 5 6 − */}
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("4")}>
+            4
           </button>
-          <button className={styles.num} onClick={() => onDigit("2")}>
-            2
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("5")}>
+            5
           </button>
-          <button className={styles.num} onClick={() => onDigit("3")}>
-            3
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("6")}>
+            6
           </button>
-          <button className={styles.op} onClick={() => onOperator("-")} aria-label="Subtract">
+          <button className={`${styles.btn} ${styles.operator}`} onClick={() => onOperator("-")} aria-label="Subtract">
             −
           </button>
 
-          {/* Bottom row: 0 . = + */}
-          <button className={`${styles.num} ${styles.span2}`} onClick={() => onDigit("0")}>
+          {/* Fifth row: 1 2 3 + */}
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("1")}>
+            1
+          </button>
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("2")}>
+            2
+          </button>
+          <button className={`${styles.btn} ${styles.digit}`} onClick={() => onDigit("3")}>
+            3
+          </button>
+          <button className={`${styles.btn} ${styles.operator}`} onClick={() => onOperator("+")} aria-label="Add">
+            +
+          </button>
+
+          {/* Bottom row: 0 (span 2) . = */}
+          <button className={`${styles.btn} ${styles.digit} ${styles.span2}`} onClick={() => onDigit("0")}>
             0
           </button>
-          <button className={styles.num} onClick={onDecimal}>
+          <button className={`${styles.btn} ${styles.digit}`} onClick={onDecimal} aria-label="Decimal point">
             .
           </button>
-          <button className={`${styles.op} ${styles.equal}`} onClick={onEqual} aria-label="Equals">
+          <button
+            className={`${styles.btn} ${styles.equals}`}
+            onClick={onEqual}
+            aria-label="Equals"
+            title="Enter / ="
+          >
             =
-          </button>
-          <button className={styles.op} onClick={() => onOperator("+")} aria-label="Add">
-            +
           </button>
         </div>
       </div>
