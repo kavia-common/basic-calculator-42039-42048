@@ -57,7 +57,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* 5 columns to fit the added backspace on action row; numeric rows still align due to spans */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.5rem;
   padding: 0.75rem;
   background: linear-gradient(180deg, rgba(37, 99, 235, 0.04), rgba(249, 250, 251, 0.6));
@@ -123,6 +124,13 @@
 
 .span2 {
   grid-column: span 2;
+}
+
+/* Keep operator and equal alignment in a 5-column grid by making "=" span 1 and numbers use spans where needed */
+.equal {
+  background: var(--secondary);
+  color: #111827;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);
 }
 
 @media (max-width: 360px) {

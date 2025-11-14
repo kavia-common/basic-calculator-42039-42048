@@ -17,6 +17,10 @@ import {
   inputDigit,
   setOperator,
   toggleSign,
+  memoryAdd,
+  memorySubtract,
+  memoryRecall,
+  memoryClear,
 } from "@/lib/calcUtils";
 
 /**
@@ -37,6 +41,10 @@ export default function Calculator(): React.ReactElement {
   const onClearAll = () => setState(() => clearAll());
   const onBackspace = () => setState((s) => backspace(s));
   const onEqual = () => setState((s) => evaluate(s));
+  const onMemoryAdd = () => setState((s) => memoryAdd(s));
+  const onMemorySub = () => setState((s) => memorySubtract(s));
+  const onMemoryRecall = () => setState((s) => memoryRecall(s));
+  const onMemoryClear = () => setState((s) => memoryClear(s));
 
   // Keyboard support
   useEffect(() => {
@@ -44,7 +52,7 @@ export default function Calculator(): React.ReactElement {
       const key = e.key;
 
       // prevent default for keys we handle to avoid scrolling on space/backspace etc.
-      const handledKeys = /[0-9]|[\+\-\*\/=\.]|Enter|Backspace|Escape|%/;
+      const handledKeys = /[0-9]|[\+\-\*\/=\.]|Enter|Backspace|Escape|%|m/i;
       if (handledKeys.test(key)) e.preventDefault();
 
       if (/^[0-9]$/.test(key)) {
@@ -63,7 +71,7 @@ export default function Calculator(): React.ReactElement {
         onOperator("-");
         return;
       }
-      if (key === "*" ) {
+      if (key === "*") {
         onOperator("×");
         return;
       }
@@ -85,6 +93,25 @@ export default function Calculator(): React.ReactElement {
       }
       if (key === "%") {
         onPercent();
+        return;
+      }
+      // Toggle sign shortcut: key 's' or '_' (Shift + - yields underscore) or F9 common on some calc keyboards
+      if (key.toLowerCase() === "s" || key === "_") {
+        onToggleSign();
+        return;
+      }
+      // Optional memory shortcuts:
+      // m => recall, Shift+m => clear, Alt+m => M-, Ctrl+m => M+
+      if (key.toLowerCase() === "m") {
+        if (e.shiftKey) {
+          onMemoryClear();
+        } else if (e.altKey) {
+          onMemorySub();
+        } else if (e.ctrlKey || e.metaKey) {
+          onMemoryAdd();
+        } else {
+          onMemoryRecall();
+        }
         return;
       }
     };
@@ -115,18 +142,35 @@ export default function Calculator(): React.ReactElement {
         </div>
 
         <div className={styles.grid}>
-          {/* Top row: CE, C, %, +/- */}
-          <button className={styles.action} onClick={onClearEntry} aria-label="Clear Entry">
+          {/* Memory row: MC MR M+ M- */}
+          <button className={styles.action} onClick={onMemoryClear} aria-label="Memory Clear (MC)" title="MC (Shift+M)">
+            MC
+          </button>
+          <button className={styles.action} onClick={onMemoryRecall} aria-label="Memory Recall (MR)" title="MR (M)">
+            MR
+          </button>
+          <button className={styles.action} onClick={onMemoryAdd} aria-label="Memory Add (M+)" title="M+ (Ctrl/Cmd+M)">
+            M+
+          </button>
+          <button className={styles.action} onClick={onMemorySub} aria-label="Memory Subtract (M-)" title="M- (Alt+M)">
+            M-
+          </button>
+
+          {/* Top row: CE, C, %, +/-, ⌫ */}
+          <button className={styles.action} onClick={onClearEntry} aria-label="Clear Entry" title="CE">
             CE
           </button>
-          <button className={styles.action} onClick={onClearAll} aria-label="Clear All">
+          <button className={styles.action} onClick={onClearAll} aria-label="Clear All" title="C / Esc">
             C
           </button>
-          <button className={styles.action} onClick={onPercent} aria-label="Percent">
+          <button className={styles.action} onClick={onPercent} aria-label="Percent" title="%">
             %
           </button>
-          <button className={styles.action} onClick={onToggleSign} aria-label="Toggle Sign">
+          <button className={styles.action} onClick={onToggleSign} aria-label="Toggle Sign" title="+/- (S)">
             +/-
+          </button>
+          <button className={styles.action} onClick={onBackspace} aria-label="Backspace" title="⌫ / Backspace">
+            ⌫
           </button>
 
           {/* Row: 7 8 9 ÷ */}
